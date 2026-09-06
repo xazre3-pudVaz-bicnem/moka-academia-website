@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+.env*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+assets/originals
+
+# public/fonts は自前ホストのWebフォント。Vercel で配信するのでコミットします。
