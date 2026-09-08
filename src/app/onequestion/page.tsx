@@ -10,7 +10,15 @@ import CtaBand from '@/components/ui/CtaBand';
 import RelatedLinks from '@/components/ui/RelatedLinks';
 import JsonLd from '@/components/ui/JsonLd';
 
+import PriceList from '@/components/ui/PriceList';
 import { photos } from '@/data/photos';
+import {
+  onequestionCampaign,
+  onequestionFees,
+  onequestionInfo,
+  onequestionNotes,
+  yen,
+} from '@/data/pricing';
 import { faqItems } from '@/data/faq';
 import { breadcrumbJsonLd, courseJsonLd, faqJsonLd } from '@/lib/jsonld';
 import { buildMetadata } from '@/lib/seo';
@@ -19,7 +27,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/onequestion';
 const TITLE = '哲学塾 わんくえ One Question｜真岡市の哲学・対話の教室';
 const DESCRIPTION =
-  '哲学塾わんくえ（寺﨑哲学塾）は、栃木県真岡市で月に一度の日曜日に開かれる、問答形式・対話中心の講座です。哲学・倫理学コースと文学コース、各60分・1回完結。初参加の方も歓迎しています。';
+  '哲学塾わんくえ（寺﨑哲学塾）は、栃木県真岡市で月に一度の日曜日に開かれる、社会人向けの対話中心の講座です。哲学・倫理学コースと文学コース、各60分・1回1,000円（2コースで1,500円）、定員8名。初回は500円でご参加いただけます。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -29,7 +37,8 @@ export const metadata: Metadata = buildMetadata({
     '真岡 哲学',
     '真岡 哲学教室',
     '哲学対話',
-    '子ども 哲学',
+    '社会人 哲学',
+    '大人 学び直し',
     '考える力',
     '問いを立てる',
     '真岡 学び',
@@ -65,6 +74,8 @@ const courses = [
 ];
 
 const details = [
+  { t: '対象', d: '社会人' },
+  { t: '定員', d: '8名' },
   { t: '開催日', d: '月に1回・日曜日' },
   { t: '時間', d: '各コース60分' },
   { t: 'スタイル', d: '問答形式・対話中心／初参加の方も大歓迎' },
@@ -87,7 +98,7 @@ export default function OnequestionPage() {
             世界は広がる。
           </>
         }
-        answer="哲学塾わんくえ（One Question／寺﨑哲学塾）は、栃木県真岡市で月に一度の日曜日に開かれる、問答形式・対話中心の講座です。哲学・倫理学コースと文学コースがあり、それぞれ60分・1回完結。初めて参加する方も歓迎しています。"
+        answer="哲学塾わんくえ（One Question／寺﨑哲学塾）は、栃木県真岡市で月に一度の日曜日に開かれる、社会人を対象とした問答形式・対話中心の講座です。哲学・倫理学コースと文学コースがあり、それぞれ60分・1回完結。受講料は1コース1,000円、2コースで1,500円。定員8名で、初めて参加する方は初回500円です。"
         photo="onequestionScene"
       />
 
@@ -186,7 +197,7 @@ export default function OnequestionPage() {
           ))}
         </ul>
 
-        <dl className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-usu bg-usu sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-usu bg-usu sm:grid-cols-2 lg:grid-cols-3">
           {details.map((d, i) => (
             <Reveal as="div" key={d.t} delay={i * 70} className="bg-kinari px-6 py-7">
               <dt className="text-[0.85rem] text-midori-2">{d.t}</dt>
@@ -195,12 +206,42 @@ export default function OnequestionPage() {
           ))}
         </dl>
 
-        <Reveal delay={320}>
-          <p className="mt-8 rounded-2xl border border-usu bg-white px-6 py-5 text-[0.95rem] leading-[1.95] text-sumi-2">
-            対象年齢と受講料は確認中です。決まり次第このページに掲載します。
-            お急ぎの方は、お電話でお尋ねください。
-          </p>
+      </Section>
+
+      {/* 受講料 */}
+      <Section tone="kinari-2" id="price">
+        <SectionHeading
+          en="PRICE"
+          title="受講料"
+          lead={`対象は${onequestionInfo.audience}、${onequestionInfo.capacity}です。1回ごとのお支払いなので、続けて通う約束はありません。`}
+        />
+
+        <Reveal delay={80}>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-3xl border-2 border-daidai/40 bg-white p-6 sm:p-8">
+            <div>
+              <p className="eyebrow text-daidai">{onequestionCampaign.title}</p>
+              <p className="display mt-3 text-[1.25rem] leading-[1.6] sm:text-[1.45rem]">
+                {onequestionCampaign.text}
+              </p>
+              <p className="mt-2 text-[0.95rem] leading-[1.9] text-sumi-2">
+                まずは一度、どんな時間か見にきてください。
+              </p>
+            </div>
+            <p className="flex items-baseline gap-3">
+              <span className="display text-[1.35rem] text-sumi-2 line-through">
+                {yen(onequestionCampaign.wasYen)}
+              </span>
+              <span aria-hidden className="text-daidai">
+                →
+              </span>
+              <span className="display text-[2.1rem] leading-none text-daidai">
+                {yen(onequestionCampaign.yen)}
+              </span>
+            </p>
+          </div>
         </Reveal>
+
+        <PriceList className="mt-12" rows={onequestionFees} notes={onequestionNotes} />
       </Section>
 
       <Section tone="kinari-2" width="narrow">
@@ -245,6 +286,8 @@ export default function OnequestionPage() {
             description: `栃木県真岡市の哲学塾わんくえ（寺﨑哲学塾）${c.name}。${c.lead}。${c.text}`,
             path: PATH,
             schedule: '月に1回・日曜日',
+            sessionYen: 1000,
+            audience: '社会人',
           })}
         />
       ))}

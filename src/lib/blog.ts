@@ -42,7 +42,8 @@ export const blogCategories = {
   },
   onequestion: {
     label: '哲学と問い',
-    description: '問いを持つこと、自分の言葉で考えること、違う考え方に触れることについて。',
+    description:
+      '問いを持つこと、自分の言葉で考えること、違う考え方に触れることについて。社会人向けの哲学塾わんくえから。',
     primary: '/onequestion',
   },
   katsudo: {

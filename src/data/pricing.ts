@@ -142,10 +142,30 @@ export const onemoreNotes = [
   '自習室と談話室をご利用いただけます。',
 ];
 
-/** 哲学塾 わんくえ。料金は資料で確認できていないため、金額を作りません */
-export const onequestionFee = {
-  known: false,
-  note: '受講料はお問い合わせください。',
+/** 哲学塾 わんくえ */
+export const onequestionFees: PriceRow[] = [
+  { label: '1コース受講', note: '哲学・倫理学／文学のどちらか', yen: 1000, highlight: true },
+  { label: '2コース受講', note: '哲学・倫理学＋文学', yen: 1500 },
+];
+
+/** わんくえの初回キャンペーン */
+export const onequestionCampaign = {
+  title: '初回キャンペーン',
+  text: '初めてご参加の方は500円です。',
+  yen: 500,
+  wasYen: 1000,
 };
+
+export const onequestionInfo = {
+  audience: '社会人',
+  capacity: '定員8名',
+};
+
+export const onequestionNotes = [
+  '受講料は1回・1名あたりの金額です。',
+  '各コース60分・1回完結です。どちらか一方だけのご参加もできます。',
+  '2コースを続けて受講される場合は1,500円になります（別々に申し込むより500円お得です）。',
+  '初めてご参加の方は、初回キャンペーンとして500円でご受講いただけます。',
+];
 
 export const yen = (n: number) => `${n.toLocaleString('ja-JP')}円`;

@@ -20,7 +20,10 @@ import {
   onemoreBundles,
   onemoreCourses,
   onemoreNotes,
-  onequestionFee,
+  onequestionCampaign,
+  onequestionFees,
+  onequestionInfo,
+  onequestionNotes,
   onespotFee,
   onespotPlanNotes,
   onespotPlans,
@@ -52,7 +55,7 @@ export default function PricePage() {
         crumbs={crumbs}
         eyebrow="PRICE"
         title="料金一覧"
-        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は入会金5,500円とオリジナルテキスト代2,000円、そのうえで月謝または1回ごとの施設利用料をお選びいただけます。出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制です。金額はすべて税込です。"
+        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は入会金5,500円とオリジナルテキスト代2,000円、そのうえで月謝または1回ごとの施設利用料をお選びいただけます。出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制、哲学塾わんくえは1コース1,000円です。"
       />
 
       {/* 健康麻雀 */}
@@ -246,17 +249,30 @@ export default function PricePage() {
         <SectionHeading
           en="ONE QUESTION"
           title="哲学塾 わんくえ"
-          lead="月に1回・日曜日、各コース60分の1回完結です。"
+          lead={`対象は${onequestionInfo.audience}、${onequestionInfo.capacity}。月に1回・日曜日、各コース60分の1回完結です。`}
         />
-        <Reveal delay={140}>
-          <p className="mt-8 rounded-2xl border border-usu bg-white px-6 py-6 text-[1rem] leading-[2]">
-            {onequestionFee.note}
-            <br />
-            <span className="text-[0.94rem] text-sumi-2">
-              受講料と対象年齢は確認中です。決まり次第このページに掲載します。
-            </span>
-          </p>
+        <Reveal delay={80}>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-3xl border-2 border-daidai/40 bg-white p-6 sm:p-8">
+            <div>
+              <p className="eyebrow text-daidai">{onequestionCampaign.title}</p>
+              <p className="display mt-3 text-[1.25rem] leading-[1.6] sm:text-[1.45rem]">
+                {onequestionCampaign.text}
+              </p>
+            </div>
+            <p className="flex items-baseline gap-3">
+              <span className="display text-[1.35rem] text-sumi-2 line-through">
+                {yen(onequestionCampaign.wasYen)}
+              </span>
+              <span aria-hidden className="text-daidai">
+                →
+              </span>
+              <span className="display text-[2.1rem] leading-none text-daidai">
+                {yen(onequestionCampaign.yen)}
+              </span>
+            </p>
+          </div>
         </Reveal>
+        <PriceList className="mt-11" rows={onequestionFees} notes={onequestionNotes} />
         <Reveal delay={180}>
           <p className="mt-7">
             <Link href="/onequestion" className="arrow-link text-midori-3">
