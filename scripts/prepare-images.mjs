@@ -60,7 +60,7 @@ const CROPS = [
   { from: SRC.onespot, out: 'teacher-portrait.jpg', box: { left: 405, top: 1022, width: 130, height: 165 } },
   // ── 英語多読塾わんもあ チラシ（1254x1254）
   { from: SRC.onemore, out: 'onemore-reading.jpg', box: { left: 20, top: 25, width: 240, height: 235 } },
-  { from: SRC.onemore, out: 'onemore-student.jpg', box: { left: 980, top: 20, width: 274, height: 285 } },
+  { from: SRC.onemore, out: 'onemore-student.jpg', box: { left: 980, top: 20, width: 274, height: 248 } },
   { from: SRC.onemore, out: 'onemore-class-jhs.jpg', box: { left: 60, top: 718, width: 218, height: 100 } },
   { from: SRC.onemore, out: 'onemore-class-hs.jpg', box: { left: 340, top: 718, width: 218, height: 100 } },
   { from: SRC.onemore, out: 'onemore-class-exam.jpg', box: { left: 620, top: 718, width: 218, height: 100 } },

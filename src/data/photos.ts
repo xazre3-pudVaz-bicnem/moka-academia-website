@@ -118,7 +118,7 @@ export const photos = {
   onemoreStudent: p(
     'onemore-student.jpg',
     274,
-    285,
+    248,
     '机に向かってペンを持ち、英語の長文に取り組む高校生（英語多読塾わんもあのイメージ）',
   ),
   onemoreClassJhs: p(
