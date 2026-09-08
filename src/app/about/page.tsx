@@ -22,7 +22,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/about';
 const TITLE = 'ぽかぽかあかでみあについて｜真岡の学びの場';
 const DESCRIPTION =
-  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市田町にある学びの場です。健康麻雀、出張健康麻雀わんすぽ、英語多読塾わんもあ、哲学塾わんくえ。4つの学びに共通する考え方と、代表・寺崎聖のこと、教室の基本情報をご紹介します。';
+  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市の学びの場です（2027年1月末オープン予定）。「遊びの中に真理あり。」から始まる3つの理念と、健康麻雀・出張健康麻雀わんすぽ・英語多読塾わんもあ・哲学塾わんくえの4つの学び、代表・寺崎聖のことをご紹介します。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -46,29 +46,42 @@ export default function AboutPage() {
             世代をこえて学べる場所を。
           </>
         }
-        answer="ぽかぽかあかでみあは、栃木県真岡市田町の「まちなか保健室 田町館」にある学びの場です。健康麻雀教室を軸に、出張健康麻雀わんすぽ、英語多読塾わんもあ、哲学塾わんくえを運営しています。小学生からシニアまで、いくつからでも新しいことを始められる場所を目指しています。"
+        answer="ぽかぽかあかでみあは、栃木県真岡市の学びの場です。健康麻雀教室を軸に、出張健康麻雀わんすぽ、英語多読塾わんもあ、哲学塾わんくえを運営しています。教室は2027年1月末のオープンを予定しています。小学生からシニアまで、いくつからでも新しいことを始められる場所を目指しています。"
         photo="poster"
       />
 
-      {/* 考えていること */}
-      <Section tone="white" width="narrow">
+      {/* 教室の理念（ご本人の言葉。言い回しを変えないこと） */}
+      <Section tone="white" id="philosophy">
         <SectionHeading
-          en="OUR IDEA"
-          title="遊びの中に真理あり。"
-          lead="ロゴの帯には、3つの言葉が入っています。「遊びの中に真理あり。」「好きこそものの上手なれ。」「憩いの空間で楽しく脳活」。"
+          en="OUR PHILOSOPHY"
+          title="教室の理念"
+          lead="ロゴの帯に入っている3つの言葉が、そのまま教室の考え方です。"
         />
-        <Reveal variant="line" delay={200}>
-          <p className="mt-8 text-[1.05rem] leading-[2.15]">
+
+        <div className="mt-14 space-y-14 sm:space-y-16">
+          {school.philosophy.map((p, i) => (
+            <article key={p.title} className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+              <Reveal variant="line" delay={i * 60}>
+                <p className="display flex items-baseline gap-4 text-[1.35rem] leading-[1.6] text-midori-3 sm:text-[1.65rem]">
+                  <span aria-hidden className="text-[0.95rem] text-daidai">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="handline">{p.title}</span>
+                </p>
+              </Reveal>
+              <Reveal variant="line" delay={i * 60 + 90}>
+                <p className="text-[1.02rem] leading-[2.15]">{p.body}</p>
+              </Reveal>
+            </article>
+          ))}
+        </div>
+
+        <Reveal delay={220}>
+          <p className="mt-14 border-t border-usu pt-8 text-[1.02rem] leading-[2.15]">
             麻雀は遊びです。英語の本を読むのも、哲学の問いを考えるのも、
             突きつめれば「おもしろいからやっている」ことに変わりはありません。
-            誰かに言われて始めることより、自分が「もう少しやってみたい」と思って続けることのほうが、
-            ずっと遠くまで行けると思っています。
-          </p>
-        </Reveal>
-        <Reveal variant="line" delay={260}>
-          <p className="mt-5 text-[1.05rem] leading-[2.15]">
             だから、この場所には麻雀卓だけでなく、静かな自習席と、
-            お茶を飲みながら話せる談話室があります。
+            お茶を飲みながら話せる談話室をつくります。
             誰かが牌を並べている隣で、誰かが本を読んでいる。
             用事がなくても寄れる場所。それが、ぽかぽかあかでみあです。
           </p>
@@ -176,21 +189,22 @@ export default function AboutPage() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
           <div>
             <SectionHeading
-              en="THE PLACE"
-              title="まちなか保健室 田町館という場所。"
-              lead="教室があるのは、栃木県真岡市田町の「まちなか保健室 田町館」です。まちの中にある、人が集まるための建物です。"
+              en="OPENING"
+              title="場所は、いま探しています。"
+              lead={`健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で${school.openingLabel}です。`}
             />
             <Reveal variant="line" delay={200}>
               <p className="mt-7 text-[1.02rem] leading-[2.1]">
-                {school.closedNote}
-                教室が休みの日に、施設へ出張してうかがう。
-                建物の中と外の両方で、健康麻雀を届けたいと思っています。
+                {school.address.note}
+                それまでのあいだも、施設へうかがう出張健康麻雀教室わんすぽと、
+                まちの中での健康麻雀ボランティアは続けています。
+                建物ができる前から、外に出て健康麻雀を届けたいと思っています。
               </p>
             </Reveal>
             <Reveal delay={260}>
               <p className="mt-7">
                 <Link href="/access" className="arrow-link text-midori-3">
-                  アクセス・教室のご案内
+                  教室のご案内・開校のお知らせ
                   <ArrowIcon className="h-5 w-5" />
                 </Link>
               </p>

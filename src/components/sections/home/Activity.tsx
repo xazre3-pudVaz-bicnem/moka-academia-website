@@ -16,7 +16,7 @@ export default function Activity() {
       <SectionHeading
         en="ACTIVITY"
         title="オープンの前から、まちの中で。"
-        lead="12月のオープンを前に、まちなか保健室 田町館で健康麻雀のボランティア開催を行っています。"
+        lead="オープンを前に、まちの中で健康麻雀のボランティア開催を行っています。"
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">

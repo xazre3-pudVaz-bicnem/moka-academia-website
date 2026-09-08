@@ -68,7 +68,7 @@ export default function ContactPage() {
                       {h.label}　{h.value}
                     </li>
                   ))}
-                  <li>定休日　{school.closedDays}</li>
+                  <li>出張の曜日　{school.onespotDays}</li>
                 </ul>
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function ContactPage() {
       <RelatedLinks
         links={[
           { href: '/beginner', label: 'はじめての方へ', text: '来る前に知っておきたいことをまとめています。' },
-          { href: '/access', label: 'アクセス・教室案内', text: 'まちなか保健室 田町館の場所と、教室の設備。' },
+          { href: '/access', label: '教室のご案内', text: 'オープンの予定と、教室でご用意する3つのスペース。' },
           { href: '/faq', label: 'よくある質問', text: '4つの学びすべてについて、質問と答えをまとめています。' },
         ]}
       />

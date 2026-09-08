@@ -225,7 +225,7 @@ export default function OnequestionPage() {
           {
             href: '/mahjong',
             label: '健康麻雀教室 あかでみあ',
-            text: '真岡市田町の教室。飲まない・吸わない・賭けない健康麻雀。',
+            text: '栃木県真岡市の教室。飲まない・吸わない・賭けない健康麻雀。',
           },
         ]}
       />

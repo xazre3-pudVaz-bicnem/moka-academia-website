@@ -14,6 +14,7 @@ import { ArrowIcon } from '@/components/ui/icons';
 import {
   facilityFeeNotes,
   facilityFees,
+  initialFees,
   monthlyFeeNotes,
   monthlyFees,
   onemoreBundles,
@@ -21,6 +22,9 @@ import {
   onemoreNotes,
   onequestionFee,
   onespotFee,
+  onespotPlanNotes,
+  onespotPlans,
+  openingCampaign,
   yen,
 } from '@/data/pricing';
 import { breadcrumbJsonLd } from '@/lib/jsonld';
@@ -30,7 +34,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/price';
 const TITLE = '料金一覧｜健康麻雀・出張健康麻雀・英語多読・哲学塾';
 const DESCRIPTION =
-  'ぽかぽかあかでみあの料金です。健康麻雀教室は月謝9,000円／月から、施設利用料は3時間1,000円から。出張健康麻雀わんすぽは60分5,000円。英語多読塾わんもあは月謝9,800円から。すべて税込。栃木県真岡市。';
+  'ぽかぽかあかでみあの料金です。健康麻雀教室は入会金5,500円、月謝9,000円／月から。オープンキャンペーンで定員8名様まで入会金無料。出張健康麻雀わんすぽは60分5,000円・真岡市内出張費一律1,000円。英語多読塾わんもあは月謝9,800円から。すべて税込。栃木県真岡市。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -48,7 +52,7 @@ export default function PricePage() {
         crumbs={crumbs}
         eyebrow="PRICE"
         title="料金一覧"
-        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は月謝と1回ごとの施設利用料の2通り、出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制です。金額はすべて税込です。"
+        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は入会金5,500円とオリジナルテキスト代2,000円、そのうえで月謝または1回ごとの施設利用料をお選びいただけます。出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制です。金額はすべて税込です。"
       />
 
       {/* 健康麻雀 */}
@@ -56,9 +60,44 @@ export default function PricePage() {
         <SectionHeading
           en="ACADEMIA"
           title="健康麻雀教室 ぽかぽかあかでみあ"
-          lead="毎週通う方は月謝、たまに来る方は施設利用料。どちらでもご利用いただけます。入会金・年会費は無料です。"
+          lead="はじめに入会金5,500円とオリジナルテキスト代2,000円。そのうえで、毎週通う方は月謝、たまに来る方は施設利用料をお選びいただけます。"
         />
-        <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* オープンキャンペーン */}
+        <Reveal delay={80}>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-3xl border-2 border-daidai/40 bg-kinari p-6 sm:p-8">
+            <div>
+              <p className="eyebrow text-daidai">{openingCampaign.title}</p>
+              <p className="display mt-3 text-[1.25rem] leading-[1.6] sm:text-[1.45rem]">
+                {openingCampaign.text}
+              </p>
+              <p className="mt-2 text-[0.95rem] leading-[1.9] text-sumi-2">
+                {openingCampaign.detail}
+              </p>
+            </div>
+            <p className="flex items-baseline gap-3">
+              <span className="display text-[1.35rem] text-sumi-2 line-through">
+                {yen(5500)}
+              </span>
+              <span aria-hidden className="text-daidai">
+                →
+              </span>
+              <span className="display text-[2.1rem] leading-none text-daidai">0円</span>
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 grid gap-12 lg:grid-cols-3 lg:gap-12">
+          <div>
+            <h3 className="display text-[1.2rem] text-midori-3">入会のときにかかるもの</h3>
+            <PriceList
+              className="mt-5"
+              rows={initialFees}
+              notes={[
+                'オープンキャンペーンとして、定員8名様まで入会金が無料になります。',
+                'オリジナルテキストは「はじめての麻雀 入門テキスト」と「基本の牌効率」です。',
+              ]}
+            />
+          </div>
           <div>
             <h3 className="display text-[1.2rem] text-midori-3">月謝</h3>
             <PriceList className="mt-5" rows={monthlyFees} notes={monthlyFeeNotes} />
@@ -85,10 +124,15 @@ export default function PricePage() {
           title="出張健康麻雀教室 わんすぽ"
           lead="デイサービスセンターや老人ホームなどの団体様へうかがいます。個人のお宅への出張は行っておりません。"
         />
-        <div className="mt-11 grid gap-8 sm:grid-cols-3">
+        <div className="mt-11 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { t: '料金', d: `${yen(onespotFee.yen)}`, s: onespotFee.unit },
             { t: '定員', d: onespotFee.capacity, s: '' },
+            {
+              t: '出張費',
+              d: yen(onespotFee.travelYen),
+              s: `${onespotFee.travelLabel}（市外はお見積り）`,
+            },
             { t: '開催日', d: '水曜日・日曜日', s: '60分が基本（相談可）' },
           ].map((r, i) => (
             <Reveal as="div" key={r.t} delay={i * 80} className="rounded-2xl border border-usu bg-white p-6">
@@ -103,8 +147,15 @@ export default function PricePage() {
             {onespotFee.travelNote}
           </p>
         </Reveal>
+        <div className="mt-12">
+          <h3 className="display text-[1.2rem] text-midori-3">
+            定額プラン（継続してご利用いただく法人様向け）
+          </h3>
+          <PriceList className="mt-5" rows={onespotPlans} notes={onespotPlanNotes} />
+        </div>
+
         <Reveal delay={300}>
-          <p className="mt-7">
+          <p className="mt-9">
             <Link href="/onespot" className="arrow-link text-midori-3">
               出張健康麻雀わんすぽを見る
               <ArrowIcon className="h-5 w-5" />

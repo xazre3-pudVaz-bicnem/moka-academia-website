@@ -9,11 +9,12 @@ import Faq from '@/components/ui/Faq';
 import CtaBand from '@/components/ui/CtaBand';
 import RelatedLinks from '@/components/ui/RelatedLinks';
 import JsonLd from '@/components/ui/JsonLd';
-import { ClockIcon, PeopleIcon, PhoneIcon, YenIcon } from '@/components/ui/icons';
+import { ClockIcon, PeopleIcon, PhoneIcon, TruckIcon, YenIcon } from '@/components/ui/icons';
 
 import { photos } from '@/data/photos';
 import { school } from '@/data/school';
-import { onespotFee, yen } from '@/data/pricing';
+import { onespotFee, onespotPlanNotes, onespotPlans, yen } from '@/data/pricing';
+import PriceList from '@/components/ui/PriceList';
 import { faqItems } from '@/data/faq';
 import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from '@/lib/jsonld';
 import { buildMetadata } from '@/lib/seo';
@@ -22,7 +23,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/onespot';
 const TITLE = '出張健康麻雀教室 わんすぽ One Spot｜真岡・栃木';
 const DESCRIPTION =
-  '出張健康麻雀教室わんすぽは、デイサービスセンターや老人ホームなどの施設へ講師がうかがい、健康麻雀のレクリエーションを行うサービスです。60分5,000円（税込）、最大12名まで。道具の準備・進行・片付けまでお任せいただけます。栃木県真岡市から。';
+  '出張健康麻雀教室わんすぽは、デイサービスセンターや老人ホームなどの施設へ講師がうかがい、健康麻雀のレクリエーションを行うサービスです。60分5,000円（税込）、定員8名。真岡市内は出張費一律1,000円。月2回9,000円からの定額プランもあります。栃木県真岡市から。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -62,7 +63,7 @@ const merits = [
 
 const flow = [
   { n: '1', t: 'お電話でご相談', d: `${school.tel} へご連絡ください。ご希望の日程、人数、場所をお聞かせください。` },
-  { n: '2', t: '内容とお見積り', d: '時間や進め方を施設様のご希望に合わせて調整します。出張費は距離や時間に応じてお見積りします。' },
+  { n: '2', t: '内容とお見積り', d: '時間や進め方を施設様のご希望に合わせて調整します。真岡市内の出張費は一律1,000円、市外はお見積りします。' },
   { n: '3', t: '当日、うかがいます', d: '麻雀卓と牌はこちらで用意します。準備から進行、片付けまでお任せください。' },
   { n: '4', t: '60分のレクリエーション', d: 'ルール説明から始めて、実際に卓を囲みます。時間は60分を基本にご相談に応じます。' },
 ];
@@ -89,7 +90,7 @@ export default function OnespotPage() {
             レクリエーション。
           </>
         }
-        answer="出張健康麻雀教室わんすぽ（One Spot）は、デイサービスセンターや老人ホームなどの団体様へ教室長がうかがい、健康麻雀のレクリエーションを行うサービスです。道具の準備・進行・片付けまですべてこちらで行います。60分5,000円（税込）、最大12名様まで。"
+        answer="出張健康麻雀教室わんすぽ（One Spot）は、デイサービスセンターや老人ホームなどの団体様へ教室長がうかがい、健康麻雀のレクリエーションを行うサービスです。道具の準備・進行・片付けまですべてこちらで行います。60分5,000円（税込）、定員8名。真岡市内への出張費は一律1,000円です。"
         photo="onespotScene"
       >
         <a href={school.telLink} className="btn btn-daidai">
@@ -101,10 +102,15 @@ export default function OnespotPage() {
 
       {/* 概要3点 */}
       <Section tone="white" size="md">
-        <ul className="grid gap-8 sm:grid-cols-3">
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { icon: <YenIcon className="h-6 w-6" />, t: '料金', d: `${yen(onespotFee.yen)}${onespotFee.unit}` },
             { icon: <PeopleIcon className="h-6 w-6" />, t: '定員', d: onespotFee.capacity },
+            {
+              icon: <TruckIcon className="h-6 w-6" />,
+              t: '出張費',
+              d: `${onespotFee.travelLabel}${yen(onespotFee.travelYen)}`,
+            },
             { icon: <ClockIcon className="h-6 w-6" />, t: '開催日', d: '水曜日・日曜日／60分が基本' },
           ].map((r, i) => (
             <Reveal as="li" key={r.t} delay={i * 90} className="text-center">
@@ -150,7 +156,7 @@ export default function OnespotPage() {
               [
                 { key: 'onespotTools', label: '道具はすべて\nこちらで用意' },
                 { key: 'onespotSupport', label: '丁寧な説明と\nサポートで安心' },
-                { key: 'onespotGroup', label: '最大12名まで\n（2卓まで対応）' },
+                { key: 'onespotGroup', label: '定員8名まで\nみんなで囲めます' },
               ] as const
             ).map((item, i) => (
               <Reveal as="li" key={item.key} delay={i * 110}>
@@ -185,6 +191,36 @@ export default function OnespotPage() {
         </ul>
       </Section>
 
+      {/* 定額プラン */}
+      <Section id="plan">
+        <SectionHeading
+          en="MONTHLY PLAN"
+          title="続けてご利用いただく法人様へ"
+          lead="毎月きまった回数でうかがう定額プランをご用意しています。1回あたり60分・定員8名が基本です。"
+        />
+        <div className="mt-11 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          <PriceList rows={onespotPlans} notes={onespotPlanNotes} />
+          <Reveal delay={140}>
+            <div className="rounded-3xl border border-usu bg-white p-6 sm:p-8">
+              <p className="display text-[1.08rem] text-midori-3">1回だけのご利用</p>
+              <p className="mt-4 flex items-baseline gap-2">
+                <span className="display text-[2rem] leading-none text-daidai">
+                  {yen(onespotFee.yen)}
+                </span>
+                <span className="text-[0.92rem] text-sumi-2">{onespotFee.unit}</span>
+              </p>
+              <p className="mt-4 border-t border-usu pt-4 text-[0.95rem] leading-[1.95] text-sumi-2">
+                まずは一度試してみたい、という施設様はこちらから。
+                定員8名、道具の準備から片付けまでお任せいただけます。
+              </p>
+              <p className="mt-4 text-[0.95rem] leading-[1.95] text-sumi-2">
+                {onespotFee.travelNote}
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
       {/* 対象と流れ */}
       <Section tone="white">
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
@@ -206,7 +242,7 @@ export default function OnespotPage() {
                 <p className="mt-2">
                   主にデイサービスセンター・老人ホームなどの団体様が対象です。
                   個人のお宅への出張は行っておりません。
-                  対応できる地域は施設様の場所によって変わりますので、まずはお電話でご相談ください。
+                  真岡市内へは出張費一律1,000円でうかがいます。市外については、まずはお電話でご相談ください。
                 </p>
               </div>
             </Reveal>
@@ -273,7 +309,7 @@ export default function OnespotPage() {
           {
             href: '/mahjong',
             label: '健康麻雀教室 あかでみあ',
-            text: '真岡市田町の教室。飲まない・吸わない・賭けない健康麻雀。',
+            text: '栃木県真岡市の教室。飲まない・吸わない・賭けない健康麻雀。',
           },
           {
             href: '/beginner',

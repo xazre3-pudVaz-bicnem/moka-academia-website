@@ -82,3 +82,14 @@ export function TileMark({
     </span>
   );
 }
+
+export function TruckIcon({ className = '' }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden className={className}>
+      <path d="M2 7h11v9H2z" strokeLinejoin="round" />
+      <path d="M13 10h4l4 3.5V16h-8z" strokeLinejoin="round" />
+      <circle cx="7" cy="18" r="1.8" />
+      <circle cx="17" cy="18" r="1.8" />
+    </svg>
+  );
+}

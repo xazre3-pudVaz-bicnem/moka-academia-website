@@ -27,7 +27,7 @@ export const mainNav: NavItem[] = [
 /** フッターに出す、上記に入りきらないページ */
 export const subNav: NavItem[] = [
   { href: '/price', label: '料金一覧' },
-  { href: '/access', label: 'アクセス・教室案内' },
+  { href: '/access', label: '教室のご案内' },
   { href: '/faq', label: 'よくある質問' },
   { href: '/contact', label: 'お問い合わせ' },
 ];

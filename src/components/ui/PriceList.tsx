@@ -28,7 +28,7 @@ export default function PriceList({
                 </span>
                 {row.note && <span className="text-[0.9rem] text-sumi-2">{row.note}</span>}
               </dt>
-              <dd className="flex items-baseline gap-2">
+              <dd className="ml-auto flex items-baseline gap-2">
                 {row.wasYen && (
                   <span className="text-[0.9rem] text-sumi-2 line-through">{yen(row.wasYen)}</span>
                 )}

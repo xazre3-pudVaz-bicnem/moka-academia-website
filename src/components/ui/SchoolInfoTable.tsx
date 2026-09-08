@@ -3,6 +3,9 @@ import { school } from '@/data/school';
 /**
  * 教室の基本情報（NAP）。
  * 表記のゆれが起きないよう、値はすべて data/school.ts から取っています。
+ *
+ * 店舗はまだ決まっていないので、住所は「準備中」と正直に出します。
+ * 物件が決まったら school.ts に住所を足して `address.settled` を true にしてください。
  */
 export default function SchoolInfoTable({ className = '' }: { className?: string }) {
   const rows: { th: string; td: React.ReactNode }[] = [
@@ -11,18 +14,20 @@ export default function SchoolInfoTable({ className = '' }: { className?: string
       th: '所在地',
       td: (
         <>
-          {school.address.full}
-          <span className="mt-1 block text-[0.9rem] text-sumi-2">
-            番地の詳細は確認中です。お越しの際はお電話でお尋ねください。
-          </span>
+          準備中
+          <span className="mt-1 block text-[0.9rem] text-sumi-2">{school.address.note}</span>
         </>
       ),
     },
+    { th: '活動エリア', td: `${school.address.area}を中心に活動しています` },
     {
       th: '電話番号',
       td: (
         <>
-          <a href={school.telLink} className="display inline-flex min-h-11 items-center text-[1.35rem] text-midori-3 underline-offset-4 hover:underline">
+          <a
+            href={school.telLink}
+            className="display inline-flex min-h-11 items-center text-[1.35rem] text-midori-3 underline-offset-4 hover:underline"
+          >
             {school.tel}
           </a>
           <span className="mt-1 block text-[0.9rem] text-sumi-2">
@@ -32,22 +37,25 @@ export default function SchoolInfoTable({ className = '' }: { className?: string
       ),
     },
     { th: '代表・教室長', td: `${school.teacher.name}（${school.teacher.reading}）` },
-    { th: '定休日', td: `${school.closedDays}（出張健康麻雀にうかがう日にしています）` },
+    { th: 'オープン', td: school.openingLabel },
+    {
+      th: '出張の曜日',
+      td: `${school.onespotDays}（出張健康麻雀教室わんすぽでうかがっています）`,
+    },
     {
       th: '営業時間',
       td: (
         <>
-          確認中
+          オープンにあわせてお知らせします
           <span className="mt-1 block text-[0.9rem] text-sumi-2">
-            フリータイムの時間帯は{school.freeTimeHours}です。詳しい営業時間はお問い合わせください。
+            施設利用のフリータイムは{school.freeTimeHours}の時間帯を予定しています。
           </span>
         </>
       ),
     },
-    { th: 'オープン', td: school.openingLabel },
     {
       th: '設備',
-      td: '全自動麻雀卓2台／自習スペース（最大16席）／談話室・休憩スペース',
+      td: '全自動麻雀卓2台／自習スペース（最大16席）／談話室・休憩スペース（いずれもオープン後）',
     },
     {
       th: 'Instagram',

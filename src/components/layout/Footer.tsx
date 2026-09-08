@@ -33,12 +33,15 @@ export default function Footer() {
             </div>
 
             <p className="mt-6 text-[0.98rem] leading-[1.95] text-sumi-2">
-              健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市田町で初心者から健康麻雀を学べる教室です。
+              健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で初心者から健康麻雀を学べる教室です。
+              2027年1月末のオープンを予定しています。
               出張健康麻雀教室わんすぽ、英語多読塾わんもあ、哲学塾わんくえも運営しています。
             </p>
 
             <address className="mt-6 not-italic text-[0.98rem] leading-[1.95]">
-              {school.address.full}
+              {school.address.area}
+              <br />
+              <span className="text-[0.9rem] text-sumi-2">{school.address.note}</span>
               <br />
               <a
                 href={school.telLink}
@@ -54,7 +57,7 @@ export default function Footer() {
                   {h.label}　{h.value}
                 </li>
               ))}
-              <li>定休日　{school.closedDays}</li>
+              <li>出張の曜日　{school.onespotDays}</li>
             </ul>
 
             <a

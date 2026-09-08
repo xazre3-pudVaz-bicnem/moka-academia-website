@@ -31,12 +31,24 @@ Next.js 16（App Router）／TypeScript／Tailwind CSS v4。デプロイ先は V
 
 ### いま「確認中」にしていること
 
-- 営業時間（施設利用のフリータイムが 9:00〜17:00 であることだけ判明）
+- **店舗の場所・住所**（まだ決まっていません。オープンの際にお知らせします）
+- 営業時間・定休日（オープンにあわせて決まります。フリータイムが 9:00〜17:00 であることだけ判明）
 - 駐車場の有無
-- 住所の番地
 - 哲学塾わんくえの受講料と対象年齢
-- 出張健康麻雀の対応地域の範囲
+- 出張健康麻雀の市外の対応地域
 - LINEオープンチャットの招待URL（`src/data/school.ts` の `lineOpenChat.url`）
+
+### 物件が決まったら
+
+`src/data/school.ts` の `address` に `postalCode` / `street` / `building` を足して
+`settled: true` にしてください。これだけで次がまとめて切り替わります。
+
+- 教室情報テーブル・フッター・トップの「準備中」表示 → 住所表示
+- 構造化データの `PostalAddress`（いまは都道府県と市まで）と `Place`（いまは出していません）
+- `llms.txt` の所在地
+
+地図（Google Maps の iframe）は住所が決まるまで外してあります。戻すときは
+`/access` と `components/sections/home/AccessBrief.tsx` に埋め込みを足してください。
 
 ---
 
@@ -108,7 +120,7 @@ node scripts/fetch-fonts.mjs      # 見出しの丸ゴシックを public/fonts 
 | `/onequestion` | 哲学塾 わんくえ |
 | `/about` | あかでみあについて（理念・代表・4つの学び） |
 | `/price` | 料金一覧 |
-| `/access` | アクセス・教室のご案内 |
+| `/access` | 教室のご案内・開校のお知らせ |
 | `/faq` | よくある質問 |
 | `/contact` | お問い合わせ |
 | `/blog` `/blog/[slug]` `/blog/category/[category]` | ブログ |
@@ -198,5 +210,12 @@ DRY_RUN_FIXTURE=path/to/article.json node scripts/generate-blog-post.mjs
 2. `CONTACT_WEBHOOK_URL` を設定（フォームの送信先）
 3. GitHub Secrets に `ANTHROPIC_API_KEY` を登録
 4. 実際の教室写真・活動写真への差し替え
-5. 「確認中」にしている項目（営業時間・駐車場・番地・哲学塾の受講料と対象年齢）の記入
-6. Googleビジネスプロフィールとの NAP 表記の突き合わせ
+5. 物件が決まったら `school.address` を更新して `settled: true` に（上の手順）
+6. 「確認中」にしている項目（営業時間・定休日・駐車場・哲学塾の受講料と対象年齢）の記入
+7. Googleビジネスプロフィールとの NAP 表記の突き合わせ
+
+### 表現についてのご確認をひとつ
+
+ポスター画像（`poster-academia.jpg`）の中に「脳の活性化 記憶力・集中力・判断力をアップ！」という
+文言が入っています。サイトの本文ではこうした断定を避けていますが、画像の中はそのままです。
+気になる場合は、この画像を使っている `/access` と `/about` で別の写真に差し替えてください。

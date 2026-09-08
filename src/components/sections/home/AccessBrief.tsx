@@ -1,25 +1,32 @@
 import Link from 'next/link';
-import GoogleMap from '@/components/ui/GoogleMap';
+import Photo from '@/components/ui/Photo';
 import Reveal from '@/components/ui/Reveal';
 import SectionHeading from '@/components/ui/SectionHeading';
+import { photos } from '@/data/photos';
 import { school } from '@/data/school';
 import { ArrowIcon, PhoneIcon, PinIcon } from '@/components/ui/icons';
 
+/**
+ * 開校のお知らせ。
+ *
+ * まだ店舗を持っていないので、住所も地図も出しません。
+ * 場所が決まったら、ここに地図とアクセス情報が戻ります。
+ */
 export default function AccessBrief() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-18 sm:px-8 sm:py-24">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+      <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-14">
         <div>
           <SectionHeading
-            en="ACCESS"
+            en="OPENING"
             title={
               <>
-                真岡市田町、
+                真岡に、
                 <br />
-                まちなか保健室 田町館。
+                まもなく開きます。
               </>
             }
-            lead="健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市田町の「まちなか保健室 田町館」にあります。"
+            lead={`健康麻雀教室ぽかぽかあかでみあは、${school.openingLabel}です。栃木県真岡市を中心に活動しています。`}
           />
 
           <Reveal delay={200}>
@@ -27,8 +34,13 @@ export default function AccessBrief() {
               <div className="flex gap-3">
                 <PinIcon className="mt-1 h-5 w-5 shrink-0 text-midori-2" />
                 <div>
-                  <dt className="text-[0.85rem] text-midori-2">所在地</dt>
-                  <dd className="mt-1 text-[1rem] leading-[1.9]">{school.address.full}</dd>
+                  <dt className="text-[0.85rem] text-midori-2">場所</dt>
+                  <dd className="mt-1 text-[1rem] leading-[1.9]">
+                    準備中
+                    <span className="mt-1 block text-[0.93rem] text-sumi-2">
+                      {school.address.note}
+                    </span>
+                  </dd>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -52,17 +64,29 @@ export default function AccessBrief() {
           </Reveal>
 
           <Reveal delay={260}>
-            <p className="mt-8">
+            <p className="mt-8 rounded-2xl bg-yamabuki-2/50 px-6 py-5 text-[0.96rem] leading-[1.95]">
+              オープンまでのあいだも、出張健康麻雀教室わんすぽと、
+              まちの中での健康麻雀ボランティアは行っています。
+              日程はお電話またはInstagramでお知らせしています。
+            </p>
+          </Reveal>
+
+          <Reveal delay={300}>
+            <p className="mt-7">
               <Link href="/access" className="arrow-link text-midori-3">
-                アクセス・教室のご案内
+                教室のご案内・開校のお知らせ
                 <ArrowIcon className="h-5 w-5" />
               </Link>
             </p>
           </Reveal>
         </div>
 
-        <Reveal variant="clip">
-          <GoogleMap />
+        <Reveal variant="clip" className="overflow-hidden rounded-[1.75rem]">
+          <Photo
+            photo={photos.spaceLounge}
+            sizes="(min-width: 1024px) 520px, 92vw"
+            className="aspect-[4/3] w-full object-cover"
+          />
         </Reveal>
       </div>
     </section>

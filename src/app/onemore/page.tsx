@@ -14,6 +14,7 @@ import { PhoneIcon } from '@/components/ui/icons';
 import { photos } from '@/data/photos';
 import { school } from '@/data/school';
 import { onemoreBundles, onemoreCourses, onemoreNotes, yen } from '@/data/pricing';
+import { onemoreLessonFlow, onemorePhilosophy } from '@/data/services';
 import { faqItems } from '@/data/faq';
 import { breadcrumbJsonLd, courseJsonLd, faqJsonLd } from '@/lib/jsonld';
 import { buildMetadata } from '@/lib/seo';
@@ -48,19 +49,7 @@ const strengths = [
   { t: '試験対策も万全', d: '定期テスト・大学受験の英語に特化。英検は級ごと・目標まで対応します。' },
 ];
 
-/** 90分授業の流れ（チラシの図の内容をそのままテキストにしています） */
-const lessonFlow = [
-  { time: '0〜10分', t: '単語テスト', d: '前週までの復習と、今週の重要単語をチェック。' },
-  { time: '10〜20分', t: '全体ミニ授業', d: '読解・文法・読み方の共通ポイントを解説。' },
-  { time: '20〜25分', t: '学年別の目標確認', d: '学年ごとに教材・読む範囲・今日の目標を確認。' },
-  { time: '25〜50分', t: '個別読解①', d: '自分の教材を読む時間。分からない所に印をつけ、講師は教室を巡回。' },
-  { time: '50〜60分', t: '学年別ミニ解説', d: '同じ教材の生徒をまとめて、重要ポイントを短く解説。' },
-  { time: '60〜75分', t: '再読・問題・要約', d: '解説を踏まえてもう一度読む。内容理解問題や要約にも挑戦。' },
-  { time: '75〜85分', t: '個別確認・質問対応', d: '間違えた部分や「?」をつけた所を、講師と一緒に確認・解決。' },
-  { time: '85〜90分', t: '学習記録・宿題確認', d: '読んだ語数・理解度を記録。次回までの宿題を確認して終了。' },
-];
-
-const cycle = ['自分で読む', '分からない所を見つける', '講師に教わる', 'もう一度読む', '「読めた！」に変える'];
+const cycle = ['自分で読む', '分からない所を見つける', '講師に教わる', '声に出して読む', 'もう一度読む'];
 
 export default function OnemorePage() {
   const faq = faqItems('onemore');
@@ -85,6 +74,25 @@ export default function OnemorePage() {
           無料体験のお申し込み
         </a>
       </PageHero>
+
+      {/* 教室理念（ご本人の言葉。言い回しを変えないこと） */}
+      <Section tone="kinari-2" width="narrow" size="md">
+        <Reveal variant="line">
+          <p className="eyebrow text-center text-daidai">OUR PHILOSOPHY</p>
+        </Reveal>
+        <Reveal variant="line" delay={90}>
+          <h2 className="display mt-5 text-center text-[1.5rem] leading-[1.6] sm:text-[2rem]">
+            <span className="handline-midori handline">{onemorePhilosophy.title}</span>
+          </h2>
+        </Reveal>
+        <ul className="mt-10 space-y-5">
+          {onemorePhilosophy.lines.map((line, i) => (
+            <Reveal as="li" key={line} delay={160 + i * 90}>
+              <p className="text-center text-[1.05rem] leading-[2.05] sm:text-[1.15rem]">{line}</p>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
 
       {/* 多読とは */}
       <Section tone="white">
@@ -225,16 +233,16 @@ export default function OnemorePage() {
         <SectionHeading
           en="90 MINUTES"
           title="90分授業の、流れ。"
-          lead="自分で読む → 分からないところを見つける → 教わる → もう一度読む → 「読めた！」に変える。この5つを、90分の中で1周します。"
+          lead="自分の力で読む → 分からないところを見つける → 教わる → 声に出す → もう一度読む。この往復を、90分の中で1周します。"
         />
 
         <ol className="mt-12 divide-y divide-usu border-y border-usu">
-          {lessonFlow.map((f, i) => (
-            <Reveal as="li" key={f.time} delay={Math.min(i, 8) * 45}>
-              <div className="grid gap-1 py-5 sm:grid-cols-[6.5rem_11rem_1fr] sm:items-baseline sm:gap-6">
-                <span className="display text-[0.95rem] text-daidai">{f.time}</span>
-                <span className="display text-[1.05rem]">{f.t}</span>
-                <span className="text-[0.95rem] leading-[1.9] text-sumi-2">{f.d}</span>
+          {onemoreLessonFlow.map((step, i) => (
+            <Reveal as="li" key={step.time} delay={Math.min(i, 8) * 45}>
+              <div className="grid gap-1 py-5 sm:grid-cols-[6.5rem_9rem_1fr] sm:items-baseline sm:gap-6">
+                <span className="display text-[0.95rem] text-daidai">{step.time}</span>
+                <span className="display text-[1.05rem]">{step.title}</span>
+                <span className="text-[0.95rem] leading-[1.9] text-sumi-2">{step.text}</span>
               </div>
             </Reveal>
           ))}
@@ -242,9 +250,10 @@ export default function OnemorePage() {
 
         <Reveal delay={200}>
           <p className="mt-8 rounded-2xl bg-wakaba-2/60 px-6 py-5 text-[0.97rem] leading-[1.95]">
-            <span className="display text-midori-3">物語を読む月は、ここがプラス。</span>
+            <span className="display text-midori-3">同じ英文を、3回読みます。</span>
             <br />
-            最後に読書会タイム。「どんな話だった？」「好きな登場人物は？」「このあとどうなると思う？」などを英語で話します。
+            初見で読み、教わってから音読し、最後にもう一度読む。
+            同じ文章が読めるようになっていく手ごたえが、次の1冊につながります。
           </p>
         </Reveal>
       </Section>
@@ -290,8 +299,8 @@ export default function OnemorePage() {
           },
           {
             href: '/access',
-            label: 'アクセス・教室案内',
-            text: 'まちなか保健室 田町館の場所と、教室の設備について。',
+            label: '教室のご案内',
+            text: 'オープンの予定と、教室でご用意する3つのスペース。',
           },
         ]}
       />

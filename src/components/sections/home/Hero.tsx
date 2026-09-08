@@ -39,7 +39,7 @@ export default function Hero() {
               {school.openingLabel}
             </span>
             <span className="rounded-full border border-midori/30 px-3.5 py-1.5 text-midori-3">
-              栃木県真岡市田町・まちなか保健室 田町館
+              栃木県真岡市
             </span>
           </p>
 

@@ -10,7 +10,7 @@ const spaces = [
     photo: 'spaceMahjong',
     title: '麻雀スペース',
     sub: '健康麻雀教室',
-    text: '全自動麻雀卓を2台備えています。初心者向けのルール説明と、やさしい指導で安心して学べます。',
+    text: '全自動麻雀卓を2台備える予定です。初心者向けのルール説明と、やさしい指導で安心して学べます。',
   },
   {
     photo: 'spaceStudy',
@@ -37,7 +37,7 @@ export default function Spaces() {
         <SectionHeading
           en="THREE SPACES"
           title="3つのスペースで、学びも、くつろぎも。"
-          lead="真岡市田町の「まちなか保健室 田町館」に、性格の違う3つの部屋があります。"
+          lead="オープンする教室には、性格の違う3つの部屋をつくります。写真は、チラシでご案内しているイメージです。"
         />
 
         <ul className="mt-12 grid gap-8 sm:grid-cols-3 sm:gap-6">
@@ -62,7 +62,7 @@ export default function Spaces() {
         <Reveal delay={340}>
           <p className="mt-10">
             <Link href="/access" className="arrow-link text-midori-3">
-              アクセス・教室のご案内
+              教室のご案内・開校のお知らせ
               <ArrowIcon className="h-5 w-5" />
             </Link>
           </p>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import Hero from '@/components/sections/home/Hero';
 import Promises from '@/components/sections/home/Promises';
+import Philosophy from '@/components/sections/home/Philosophy';
 import About from '@/components/sections/home/About';
 import FourLearnings from '@/components/sections/home/FourLearnings';
 import Names from '@/components/sections/home/Names';
@@ -40,6 +41,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Promises />
+      <Philosophy />
       <About />
       <FourLearnings />
       <Names />

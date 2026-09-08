@@ -8,11 +8,28 @@ import { faqItems, type FaqItem } from '@/data/faq';
  * 方針:
  * - 本番URLが未設定のあいだは出力しません（プレビューURLが混ざるのを防ぐため）。
  * - 口コミ・評価（aggregateRating / review）は、実在するものが無いので入れません。
- * - 金額は data/pricing.ts に載っている、チラシで確認できた数字だけを使います。
+ * - 金額は data/pricing.ts に載っている、確認できた数字だけを使います。
+ * - 店舗がまだ無いので、住所は都道府県と市までしか出しません（address.settled）。
+ *   物件が決まって settled を true にしたら、streetAddress と Place を出します。
  */
 
 const ORG_ID = '#organization';
 const PLACE_ID = '#place';
+
+/**
+ * 住所。
+ * 店舗が決まるまでは都道府県と市までしか出しません。
+ * 番地のない PostalAddress は Google も受け付けます（LocalBusiness の推奨は満たしませんが、
+ * 存在しない住所を書くよりはずっと良いという判断です）。
+ */
+function postalAddress() {
+  return {
+    '@type': 'PostalAddress',
+    addressCountry: 'JP',
+    addressRegion: school.address.prefecture,
+    addressLocality: school.address.city,
+  };
+}
 
 export type Crumb = { name: string; href: string };
 
@@ -30,20 +47,13 @@ export function organizationJsonLd() {
     name: school.fullName,
     alternateName: [school.name, school.shortName, 'ぽかぽかあかでみあ'],
     description:
-      '栃木県真岡市田町の健康麻雀教室。飲まない・吸わない・賭けない健康麻雀を初心者から学べます。出張健康麻雀わんすぽ、英語多読塾わんもあ、哲学塾わんくえも運営しています。',
+      '栃木県真岡市の健康麻雀教室。飲まない・吸わない・賭けない健康麻雀を初心者から学べます。出張健康麻雀わんすぽ、英語多読塾わんもあ、哲学塾わんくえも運営しています。2027年1月末オープン予定。',
     url: url('/'),
     telephone: telE164,
     logo: url('/photos/logo-academia.jpg'),
     image: url('/og.jpg'),
     slogan: school.tagline,
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'JP',
-      postalCode: school.address.postalCode,
-      addressRegion: school.address.prefecture,
-      addressLocality: school.address.city,
-      streetAddress: `${school.address.street} ${school.address.building}`,
-    },
+    address: postalAddress(),
     areaServed: [
       { '@type': 'City', name: '真岡市' },
       { '@type': 'AdministrativeArea', name: '栃木県' },
@@ -64,22 +74,21 @@ export function organizationJsonLd() {
   };
 }
 
-/** 場所。営業時間が確認できていないので openingHours は出しません */
+/**
+ * 場所。
+ * 店舗がまだ無いあいだは出しません（school.address.settled が false）。
+ * 存在しない住所を構造化データに入れないための分岐です。
+ * 物件が決まったら school.ts に番地を足して settled を true にしてください。
+ * 営業時間も確認できていないので openingHours は出しません。
+ */
 export function placeJsonLd() {
-  if (!isPublic) return null;
+  if (!isPublic || !school.address.settled) return null;
   return {
     '@context': 'https://schema.org',
     '@type': 'Place',
     '@id': url(`/${PLACE_ID}`),
-    name: `${school.name}（${school.address.building}）`,
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'JP',
-      postalCode: school.address.postalCode,
-      addressRegion: school.address.prefecture,
-      addressLocality: school.address.city,
-      streetAddress: `${school.address.street} ${school.address.building}`,
-    },
+    name: school.name,
+    address: postalAddress(),
     telephone: telE164,
   };
 }
@@ -184,7 +193,8 @@ export function courseJsonLd({
       '@type': 'CourseInstance',
       courseMode: 'onsite',
       ...(schedule ? { courseSchedule: schedule } : {}),
-      location: { '@id': url(`/${PLACE_ID}`) },
+      // Place を出していないあいだ（店舗が決まる前）は、参照先が無いので location を付けません
+      ...(school.address.settled ? { location: { '@id': url(`/${PLACE_ID}`) } } : {}),
       ...(offers ? { offers } : {}),
     },
     ...(offers ? { offers } : {}),
@@ -211,7 +221,8 @@ export function serviceJsonLd() {
       '@type': 'Offer',
       price: '5000',
       priceCurrency: 'JPY',
-      description: '60分5,000円（税込・最大12名／2卓まで）。出張費は別途お見積り。',
+      description:
+        '60分5,000円（税込・定員8名）。真岡市内への出張費は一律1,000円。継続してご利用の法人様向けに月2回9,000円からの定額プランがあります。',
     },
   };
 }

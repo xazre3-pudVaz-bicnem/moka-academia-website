@@ -16,7 +16,15 @@ import { ArrowIcon, TileMark } from '@/components/ui/icons';
 import { photos } from '@/data/photos';
 import { school } from '@/data/school';
 import { threePromises } from '@/data/services';
-import { facilityFeeNotes, facilityFees, monthlyFeeNotes, monthlyFees } from '@/data/pricing';
+import {
+  facilityFeeNotes,
+  facilityFees,
+  initialFees,
+  monthlyFeeNotes,
+  monthlyFees,
+  openingCampaign,
+  yen,
+} from '@/data/pricing';
 import { faqItems } from '@/data/faq';
 import { breadcrumbJsonLd, courseJsonLd, faqJsonLd } from '@/lib/jsonld';
 import { buildMetadata } from '@/lib/seo';
@@ -25,7 +33,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/mahjong';
 const TITLE = '健康麻雀教室 ぽかぽかあかでみあ｜真岡市の麻雀教室';
 const DESCRIPTION =
-  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市田町で初心者から健康麻雀を学べる教室です。飲まない・吸わない・賭けない健康麻雀。全自動麻雀卓2台、自習スペース、談話室を備え、小学生からシニアまで同じ卓を囲みます。月謝9,000円から。2026年12月オープン。';
+  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で初心者から健康麻雀を学べる教室です。飲まない・吸わない・賭けない健康麻雀。全自動麻雀卓2台、自習スペース、談話室をご用意します。月謝9,000円から、入会金5,500円。オープンキャンペーンで定員8名様まで入会金無料。2027年1月末オープン予定。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -82,7 +90,7 @@ export default function MahjongPage() {
             ぽかぽかあかでみあ
           </>
         }
-        answer="健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市田町で、初心者から健康麻雀を学べる教室です。お酒を飲まない・タバコを吸わない・お金を賭けない健康麻雀を、麻雀プロを目指す講師が一からお伝えします。2026年12月にオープンします。"
+        answer="健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で、初心者から健康麻雀を学べる教室です。お酒を飲まない・タバコを吸わない・お金を賭けない健康麻雀を、麻雀プロを目指す講師が一からお伝えします。2027年1月末のオープンを予定しています。"
         photo="roomWide"
       >
         <div className="flex flex-wrap gap-3">
@@ -205,12 +213,37 @@ export default function MahjongPage() {
         <SectionHeading
           en="PRICE"
           title="料金"
-          lead="毎週通う方は月謝、たまに来る方は施設利用料。どちらでもご利用いただけます。すべて税込です。"
+          lead="入会金5,500円とオリジナルテキスト代2,000円。そのうえで、毎週通う方は月謝、たまに来る方は施設利用料をお選びいただけます。すべて税込です。"
         />
+
+        <Reveal delay={80}>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 rounded-3xl border-2 border-daidai/40 bg-white p-6 sm:p-8">
+            <div>
+              <p className="eyebrow text-daidai">{openingCampaign.title}</p>
+              <p className="display mt-3 text-[1.25rem] leading-[1.6] sm:text-[1.45rem]">
+                {openingCampaign.text}
+              </p>
+              <p className="mt-2 text-[0.95rem] leading-[1.9] text-sumi-2">{openingCampaign.detail}</p>
+            </div>
+            <p className="flex items-baseline gap-3">
+              <span className="display text-[1.35rem] text-sumi-2 line-through">{yen(5500)}</span>
+              <span aria-hidden className="text-daidai">
+                →
+              </span>
+              <span className="display text-[2.1rem] leading-none text-daidai">0円</span>
+            </p>
+          </div>
+        </Reveal>
 
         <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h3 className="display text-[1.2rem] text-midori-3">月謝</h3>
+            <h3 className="display text-[1.2rem] text-midori-3">入会のときにかかるもの</h3>
+            <PriceList
+              className="mt-5"
+              rows={initialFees}
+              notes={['オープンキャンペーンとして、定員8名様まで入会金が無料になります。']}
+            />
+            <h3 className="display mt-10 text-[1.2rem] text-midori-3">月謝</h3>
             <PriceList className="mt-5" rows={monthlyFees} notes={monthlyFeeNotes} />
           </div>
           <div>
@@ -246,13 +279,13 @@ export default function MahjongPage() {
           },
           {
             href: '/access',
-            label: 'アクセス・教室案内',
-            text: 'まちなか保健室 田町館の場所と、教室の設備について。',
+            label: '教室のご案内',
+            text: 'オープンの予定と、教室でご用意する3つのスペース。',
           },
           {
             href: '/onespot',
             label: '出張健康麻雀 わんすぽ',
-            text: '施設へうかがう出張健康麻雀。60分5,000円、最大12名まで。',
+            text: '施設へうかがう出張健康麻雀。60分5,000円、定員8名。',
           },
         ]}
       />
