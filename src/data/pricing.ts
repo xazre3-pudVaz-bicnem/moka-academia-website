@@ -44,23 +44,17 @@ export const monthlyFeeNotes = [
   '親子割は、通常19,000円／月のところ3,000円お得になります。',
 ];
 
-/** 施設利用料（税込・1人）。オープン後の料金です */
+/**
+ * 施設利用料（税込・1人）。オープン後の料金です。
+ * 2026年10月、ご本人からの修正で「小学生から高校生まで一律300円」の1行だけになりました
+ * （シニア・社会人、大学生、中高生の行と、フリータイム・ドリンク・サブスク会員の注記は削除）。
+ */
 export const facilityFees: PriceRow[] = [
-  { label: 'シニア・社会人', note: '3時間', yen: 1000 },
-  { label: 'シニア・社会人', note: 'フリータイム（9:00〜17:00）', yen: 2000 },
-  { label: '大学生', yen: 700 },
-  { label: '中高生', yen: 500 },
-  { label: '学生', note: '小学生〜高校生', yen: 200 },
+  { label: '小学生〜高校生', note: '一律', yen: 300, highlight: true },
 ];
 
 export const facilityFeeNotes = [
-  'フリータイムは営業終了まで出入り自由です。',
-  'ドリンク1本付き（追加は1本200円）。',
-  'サブスク会員は別途プランがあります。',
   '未就学のお子さまのご利用はお断りしています。',
-  // チラシ上で「中高生」と「学生（小学生〜高校生）」の区分が重なっているため、
-  // どちらの数字も消さずに載せたうえで、確認をお願いする一言を添えています。
-  '学生料金は区分が重なる部分があります。どの料金になるかはお問い合わせください。',
   '施設利用料は、オープン後にご利用いただける料金です。',
 ];
 
@@ -97,6 +91,10 @@ export type OnemoreCourse = {
   minutes: number;
   yen: number;
   material: string;
+  /** 定員の書き方（コースによって数え方が違います） */
+  capacity: string;
+  /** 対象（構造化データ用） */
+  audience: string;
   photo: 'onemoreClassJhs' | 'onemoreClassHs' | 'onemoreClassExam';
 };
 
@@ -108,6 +106,8 @@ export const onemoreCourses: OnemoreCourse[] = [
     minutes: 90,
     yen: 9800,
     material: 'オリジナル教材を使用',
+    capacity: '定員8名',
+    audience: '中学生',
     photo: 'onemoreClassJhs',
   },
   {
@@ -117,17 +117,30 @@ export const onemoreCourses: OnemoreCourse[] = [
     minutes: 90,
     yen: 11800,
     material: '大学入試レベルの長文を使用',
+    capacity: '定員8名',
+    audience: '高校生',
     photo: 'onemoreClassHs',
   },
   {
-    name: '試験対策特化コース',
+    name: '受験対策特化コース',
     day: '毎週金曜日',
     time: '21:10〜22:40',
     minutes: 90,
     yen: 17800,
     material: '個人の目標に合わせて伴走',
+    capacity: '各曜日定員3名',
+    audience: '中学生・高校生',
     photo: 'onemoreClassExam',
   },
+];
+
+/**
+ * 受験対策特化コースで、通う日を増やす場合の月謝（税込）。
+ * 2026年10月にご本人からいただいた金額です。週3日まで追加できます。
+ */
+export const onemoreExamExtraPlans: PriceRow[] = [
+  { label: '週2日の場合', yen: 32800, unit: '／月' },
+  { label: '週3日の場合', yen: 43800, unit: '／月' },
 ];
 
 export const onemoreBundles = [
@@ -136,8 +149,9 @@ export const onemoreBundles = [
 ];
 
 export const onemoreNotes = [
-  'すべて月謝制、各コース定員8名です。',
-  'まとめ割は、試験対策特化コースと通常コースを両方受講される方が対象です。',
+  'すべて月謝制です。中学生コース・高校生コースは各コース定員8名、受験対策特化コースは各曜日定員3名です。',
+  '受験対策特化コースは、週3日まで通う日を追加できます（各曜日に1教科が目安です）。',
+  'まとめ割は、受験対策特化コースと通常コースを両方受講される方が対象です。',
   '無料体験授業を受け付けています。',
   '自習室と談話室をご利用いただけます。',
 ];

@@ -196,6 +196,7 @@ export default function AboutPage() {
             <Reveal variant="line" delay={200}>
               <p className="mt-7 text-[1.02rem] leading-[2.1]">
                 {school.address.note}
+                {school.venue.text}
                 それまでのあいだも、施設へうかがう出張健康麻雀教室わんすぽと、
                 まちの中での健康麻雀ボランティアは続けています。
                 建物ができる前から、外に出て健康麻雀を届けたいと思っています。

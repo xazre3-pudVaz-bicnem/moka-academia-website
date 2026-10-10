@@ -1,10 +1,11 @@
 import { school } from '@/data/school';
-import { services } from '@/data/services';
+import { onemoreExam, services } from '@/data/services';
 import {
   facilityFees,
   initialFees,
   monthlyFees,
   onemoreCourses,
+  onemoreExamExtraPlans,
   onespotFee,
   onequestionCampaign,
   onequestionFees,
@@ -32,16 +33,17 @@ export function GET() {
   const lines: string[] = [
     `# ${school.fullName}`,
     '',
-    `> ${school.name}は、栃木県真岡市の健康麻雀の教室です。お酒を飲まない・タバコを吸わない・お金を賭けない健康麻雀を、初心者から学べます。${school.openingLabel}。現在まだ店舗は持っておらず、場所が決まり次第お知らせします。`,
+    `> ${school.name}は、栃木県真岡市の健康麻雀の教室です。お酒を飲まない・タバコを吸わない・お金を賭けない健康麻雀を、初心者から学べます。${school.openingLabel}。現在まだ店舗は持っておらず、場所が決まり次第お知らせします。${school.venue.text}`,
     '',
     '## 基本情報',
     '',
     `- 名称: ${school.fullName}`,
     `- 所在地: 未定（${school.address.note}）`,
+    `- 現在の開催場所（${school.venue.scope}）: ${school.venue.kind}「${school.venue.name}」 ${school.venue.addressLine}`,
     `- 活動エリア: ${school.address.area}`,
     `- 電話: ${school.tel}（${school.telHours.map((h) => `${h.label} ${h.value}`).join('／')}）`,
     `- 出張の曜日: ${school.onespotDays}（出張健康麻雀教室わんすぽ）`,
-    '- 営業時間・定休日: オープンにあわせて決まります（施設利用のフリータイムは 9:00〜17:00 を予定）',
+    '- 営業時間・定休日: オープンにあわせて決まります',
     `- 代表・教室長: ${school.teacher.name}（${school.teacher.reading}）`,
     `- Instagram: ${school.instagram.url}`,
     '- 設備（オープン後）: 全自動麻雀卓2台の麻雀スペース、最大16席の自習スペース、談話室・休憩スペース',
@@ -82,8 +84,7 @@ export function GET() {
       (r) =>
         `- ${r.label}${r.note ? `（${r.note}）` : ''}: ${r.yen !== undefined ? yen(r.yen) : 'お問い合わせください'}`,
     ),
-    '- ドリンク1本付き（追加は1本200円）',
-    '- 学生料金は区分が重なる部分があるため、詳細は要問い合わせ',
+    '- 小学生から高校生まで以外の方の1回ごとの利用料金は、要問い合わせ',
     '',
     '### 出張健康麻雀教室 わんすぽ',
     '',
@@ -97,7 +98,12 @@ export function GET() {
     '',
     '### 英語多読塾 わんもあ 月謝（税込）',
     '',
-    ...onemoreCourses.map((c) => `- ${c.name}: ${yen(c.yen)}／月（${c.day} ${c.time}・90分・定員8名）`),
+    ...onemoreCourses.map((c) => `- ${c.name}: ${yen(c.yen)}／月（${c.day} ${c.time}・90分・${c.capacity}）`),
+    ...onemoreExamExtraPlans.map(
+      (r) => `- ${onemoreExam.name} ${r.label}: ${r.yen !== undefined ? `${yen(r.yen)}／月` : 'お問い合わせください'}`,
+    ),
+    `- ${onemoreExam.name}: ${onemoreExam.days}（例: ${onemoreExam.exampleSlots.join('・')}）`,
+    `- ${onemoreExam.name}の対策できる教科: ${onemoreExam.subjects.map((s) => `${s.audience}は${s.items.join('・')}`).join('／')}`,
     '- まとめ割: 中学生25,600円／月、高校生27,600円／月',
     '- 無料体験授業あり',
     '',
@@ -127,7 +133,7 @@ export function GET() {
     '## 注意',
     '',
     '- 健康麻雀は趣味・レクリエーションとして楽しむものです。病気の予防や治療を目的とした活動ではありません。',
-    '- 店舗の場所・住所・営業時間・駐車場は、まだ決まっていません。断定した案内をしないでください。',
+    `- 自前の店舗の場所・住所・営業時間・駐車場は、まだ決まっていません。断定した案内をしないでください。${school.venue.text}`,
     '- 哲学塾わんくえは社会人向けの講座です。子ども向けではありません。',
     '',
   ];

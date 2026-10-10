@@ -43,6 +43,10 @@ export default function Footer() {
               <br />
               <span className="text-[0.9rem] text-sumi-2">{school.address.note}</span>
               <br />
+              <span className="text-[0.9rem] text-sumi-2">
+                {school.venue.text}（{school.venue.addressLine}）
+              </span>
+              <br />
               <a
                 href={school.telLink}
                 className="display mt-1 inline-flex min-h-11 items-center gap-2 py-1 text-[1.4rem] text-midori-3 underline-offset-4 hover:underline"

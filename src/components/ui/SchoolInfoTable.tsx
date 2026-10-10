@@ -6,6 +6,7 @@ import { school } from '@/data/school';
  *
  * 店舗はまだ決まっていないので、住所は「準備中」と正直に出します。
  * 物件が決まったら school.ts に住所を足して `address.settled` を true にしてください。
+ * 健康麻雀教室だけは、レンタルスペース（school.venue）を借りて開いているので、その住所を添えています。
  */
 export default function SchoolInfoTable({ className = '' }: { className?: string }) {
   const rows: { th: string; td: React.ReactNode }[] = [
@@ -16,6 +17,8 @@ export default function SchoolInfoTable({ className = '' }: { className?: string
         <>
           準備中
           <span className="mt-1 block text-[0.9rem] text-sumi-2">{school.address.note}</span>
+          <span className="mt-2 block">{school.venue.text}</span>
+          <span className="mt-1 block text-[0.95rem]">{school.venue.addressLine}</span>
         </>
       ),
     },
@@ -42,17 +45,7 @@ export default function SchoolInfoTable({ className = '' }: { className?: string
       th: '出張の曜日',
       td: `${school.onespotDays}（出張健康麻雀教室わんすぽでうかがっています）`,
     },
-    {
-      th: '営業時間',
-      td: (
-        <>
-          オープンにあわせてお知らせします
-          <span className="mt-1 block text-[0.9rem] text-sumi-2">
-            施設利用のフリータイムは{school.freeTimeHours}の時間帯を予定しています。
-          </span>
-        </>
-      ),
-    },
+    { th: '営業時間', td: 'オープンにあわせてお知らせします' },
     {
       th: '設備',
       td: '全自動麻雀卓2台／自習スペース（最大16席）／談話室・休憩スペース（いずれもオープン後）',

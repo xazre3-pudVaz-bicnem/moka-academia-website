@@ -13,8 +13,21 @@ import { PhoneIcon } from '@/components/ui/icons';
 
 import { photos } from '@/data/photos';
 import { school } from '@/data/school';
-import { onemoreBundles, onemoreCourses, onemoreNotes, yen } from '@/data/pricing';
-import { onemoreLessonFlow, onemorePhilosophy } from '@/data/services';
+import PriceList from '@/components/ui/PriceList';
+import {
+  onemoreBundles,
+  onemoreCourses,
+  onemoreExamExtraPlans,
+  onemoreNotes,
+  yen,
+  type PriceRow,
+} from '@/data/pricing';
+import {
+  onemoreExam,
+  onemoreLessonFlow,
+  onemorePhilosophy,
+  onemoreRecommended,
+} from '@/data/services';
 import { faqItems } from '@/data/faq';
 import { breadcrumbJsonLd, courseJsonLd, faqJsonLd } from '@/lib/jsonld';
 import { buildMetadata } from '@/lib/seo';
@@ -23,7 +36,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/onemore';
 const TITLE = '英語多読塾 わんもあ One More｜真岡市の英語塾';
 const DESCRIPTION =
-  '英語多読塾わんもあは、栃木県真岡市で中学生・高校生を対象に、多読と音読で英語を学ぶ塾です。毎週金曜日、90分授業、各コース定員8名。中学生9,800円／高校生11,800円／試験対策17,800円（月謝・税込）。無料体験授業を受け付けています。';
+  '英語多読塾わんもあは、栃木県真岡市で中学生・高校生を対象に、多読と音読で英語を学ぶ塾です。毎週金曜日、90分授業。中学生9,800円／高校生11,800円／受験対策17,800円（月謝・税込）。無料体験授業を受け付けています。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -51,6 +64,22 @@ const strengths = [
 
 const cycle = ['自分で読む', '分からない所を見つける', '講師に教わる', '声に出して読む', 'もう一度読む'];
 
+/** 受験対策特化コースの月謝。週1日は通常の金曜日の枠、週2日・週3日は通う日を増やす場合 */
+const examCourse = onemoreCourses.find((c) => c.name === onemoreExam.name);
+const examPlans: PriceRow[] = [
+  ...(examCourse
+    ? [
+        {
+          label: '週1日',
+          note: `${examCourse.day} ${examCourse.time}`,
+          yen: examCourse.yen,
+          unit: '／月',
+        },
+      ]
+    : []),
+  ...onemoreExamExtraPlans,
+];
+
 export default function OnemorePage() {
   const faq = faqItems('onemore');
 
@@ -66,7 +95,7 @@ export default function OnemorePage() {
             <span className="handline-midori handline">「もっと読める」</span>へ。
           </>
         }
-        answer="英語多読塾わんもあ（One More）は、栃木県真岡市で中学生・高校生を対象に、多読と音読で英語を学ぶ塾です。毎週金曜日、90分授業、各コース定員8名。英語を日本語に訳してから理解するのではなく、英語のまま読める状態を目指します。"
+        answer="英語多読塾わんもあ（One More）は、栃木県真岡市で中学生・高校生を対象に、多読と音読で英語を学ぶ塾です。毎週金曜日、90分授業。中学生コース・高校生コースは各コース定員8名です。英語を日本語に訳してから理解するのではなく、英語のまま読める状態を目指します。"
         photo="onemoreReading"
       >
         <a href={school.telLink} className="btn btn-daidai">
@@ -152,12 +181,27 @@ export default function OnemorePage() {
         </ul>
       </Section>
 
+      {/* 受講をおすすめする方（ご本人の言葉） */}
+      <Section tone="white" width="narrow" size="md">
+        <SectionHeading en="FOR YOU" title="受講をおすすめする方" />
+        <ul className="mt-9 divide-y divide-usu border-y border-usu">
+          {onemoreRecommended.map((r, i) => (
+            <Reveal as="li" key={r} delay={Math.min(i, 5) * 60}>
+              <p className="flex gap-3 py-4 text-[1.02rem] leading-[1.9]">
+                <span aria-hidden className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-wakaba" />
+                {r}
+              </p>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
       {/* コース */}
       <Section tone="kinari-2" id="course">
         <SectionHeading
           en="COURSE"
           title="コースと料金"
-          lead="すべて毎週金曜日、90分授業、月謝制、各コース定員8名です。金額は税込です。"
+          lead="毎週金曜日、90分授業、月謝制です。中学生コース・高校生コースは各コース定員8名、受験対策特化コースは各曜日定員3名です。金額は税込です。"
         />
 
         <ul className="mt-12 grid gap-8 lg:grid-cols-3">
@@ -185,6 +229,13 @@ export default function OnemorePage() {
                 <p className="mt-4 border-t border-usu pt-4 text-[0.94rem] leading-[1.9] text-sumi-2">
                   {c.material}
                 </p>
+                {c.name === onemoreExam.name && (
+                  <p className="mt-3">
+                    <a href="#exam" className="arrow-link text-[0.94rem] text-midori-3">
+                      コースの内容をくわしく見る
+                    </a>
+                  </p>
+                )}
               </div>
             </Reveal>
           ))}
@@ -195,7 +246,7 @@ export default function OnemorePage() {
           <div className="mt-10 rounded-3xl border-2 border-momo/30 bg-white p-6 sm:p-8">
             <p className="display text-[1.12rem] text-momo">まとめ割で断然お得！</p>
             <p className="mt-2 text-[0.96rem] leading-[1.9] text-sumi-2">
-              試験対策特化コースと通常コースを受講される方は、まとめ割の価格になります。
+              受験対策特化コースと通常コースを受講される方は、まとめ割の価格になります。
             </p>
             <ul className="mt-6 grid gap-6 sm:grid-cols-2">
               {onemoreBundles.map((b) => (
@@ -226,6 +277,103 @@ export default function OnemorePage() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      {/* 受験対策特化コース（ご本人からいただいた内容） */}
+      <Section id="exam">
+        <SectionHeading en="EXAM COURSE" title={onemoreExam.name} lead={onemoreExam.lead} />
+
+        <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <Reveal>
+              <h3 className="display border-l-4 border-wakaba pl-3 text-[1.15rem] text-midori-3">
+                おすすめする方
+              </h3>
+              <ul className="mt-5 divide-y divide-usu border-y border-usu">
+                {onemoreExam.recommended.map((r) => (
+                  <li key={r} className="flex gap-3 py-4 text-[1rem] leading-[1.9]">
+                    <span aria-hidden className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-wakaba" />
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <h3 className="display mt-11 border-l-4 border-wakaba pl-3 text-[1.15rem] text-midori-3">
+                コースの内容
+              </h3>
+              <ul className="mt-5 divide-y divide-usu border-y border-usu">
+                {onemoreExam.description.map((d) => (
+                  <li key={d} className="flex gap-3 py-4 text-[1rem] leading-[1.9]">
+                    <span aria-hidden className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-wakaba" />
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={180}>
+              <h3 className="display mt-11 border-l-4 border-wakaba pl-3 text-[1.15rem] text-midori-3">
+                対策できる教科
+              </h3>
+              <dl className="mt-5 divide-y divide-usu border-y border-usu">
+                {onemoreExam.subjects.map((s) => (
+                  <div key={s.audience} className="grid gap-2 py-4 sm:grid-cols-[5rem_1fr] sm:gap-5">
+                    <dt className="display text-[1rem]">{s.audience}</dt>
+                    <dd>
+                      <ul className="flex flex-wrap gap-2">
+                        {s.items.map((item) => (
+                          <li
+                            key={item}
+                            className="rounded-full bg-wakaba-2 px-3.5 py-1.5 text-[0.92rem] text-midori-3"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          </div>
+
+          <div>
+            <Reveal delay={80}>
+              <h3 className="display border-l-4 border-wakaba pl-3 text-[1.15rem] text-midori-3">
+                通い方
+              </h3>
+              <dl className="mt-5 divide-y divide-usu border-y border-usu">
+                {[
+                  { dt: '定員', dd: onemoreExam.capacity },
+                  { dt: '進め方', dd: onemoreExam.style },
+                  { dt: '通う日数', dd: onemoreExam.days },
+                  { dt: '曜日・時間の例', dd: onemoreExam.exampleSlots.join('／') },
+                ].map((row) => (
+                  <div key={row.dt} className="grid gap-1 py-4 sm:grid-cols-[8rem_1fr] sm:gap-5">
+                    <dt className="display text-[0.95rem] text-midori-3">{row.dt}</dt>
+                    <dd className="text-[1rem] leading-[1.9]">{row.dd}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+
+            <Reveal delay={160}>
+              <h3 className="display mt-11 border-l-4 border-wakaba pl-3 text-[1.15rem] text-midori-3">
+                月謝（税込）
+              </h3>
+              <PriceList
+                className="mt-5"
+                rows={examPlans}
+                notes={[
+                  '通う曜日と時間は、お電話でお問い合わせください。',
+                  '通常コースとあわせて受講される方には、まとめ割があります。',
+                ]}
+              />
+            </Reveal>
+          </div>
+        </div>
       </Section>
 
       {/* 90分の流れ */}
@@ -317,11 +465,11 @@ export default function OnemorePage() {
           key={c.name}
           data={courseJsonLd({
             name: `英語多読塾わんもあ ${c.name}`,
-            description: `栃木県真岡市の英語多読塾わんもあ ${c.name}。${c.day} ${c.time}、${c.minutes}分授業、定員8名。${c.material}。`,
+            description: `栃木県真岡市の英語多読塾わんもあ ${c.name}。${c.day} ${c.time}、${c.minutes}分授業、${c.capacity}。${c.material}。`,
             path: PATH,
             schedule: `${c.day} ${c.time}`,
             monthlyYen: c.yen,
-            audience: c.name.startsWith('中学生') ? '中学生' : '高校生',
+            audience: c.audience,
           })}
         />
       ))}

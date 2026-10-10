@@ -19,7 +19,7 @@ import { HOME_CRUMB } from '@/lib/nav';
 const PATH = '/access';
 const TITLE = '教室のご案内・開校のお知らせ｜2027年1月末オープン予定';
 const DESCRIPTION =
-  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で2027年1月末のオープンを予定しています。現在まだ店舗はなく、場所が決まり次第このページでお知らせします。教室でご用意する3つのスペースと、お問い合わせ先をご案内します。';
+  '健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で2027年1月末のオープンを予定しています。現在まだ店舗はなく、健康麻雀教室のみ真岡市のレンタルスペース「コレカラ」で開催しています。3つのスペースとお問い合わせ先をご案内します。';
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -61,7 +61,7 @@ export default function AccessPage() {
             真岡でオープンします。
           </>
         }
-        answer={`健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で${school.openingLabel}です。${school.address.note}お問い合わせはお電話（${school.tel}）へどうぞ。`}
+        answer={`健康麻雀教室ぽかぽかあかでみあは、栃木県真岡市で${school.openingLabel}です。${school.address.note}${school.venue.text}お問い合わせはお電話（${school.tel}）へどうぞ。`}
         photo="poster"
       />
 
@@ -77,6 +77,13 @@ export default function AccessPage() {
               場所が決まりましたら、オープンの際に改めてこのページでお知らせします。
               住所・アクセス・駐車場についても、そのときにご案内します。
             </p>
+            <div className="mt-6 border-t border-daidai/30 pt-6">
+              <p className="text-[1.02rem] leading-[2.05]">{school.venue.text}</p>
+              <dl className="mt-3 grid gap-1 sm:grid-cols-[4rem_1fr] sm:gap-4">
+                <dt className="display text-[0.95rem] text-midori-3">住所</dt>
+                <dd className="text-[1.02rem] leading-[1.9]">{school.venue.addressLine}</dd>
+              </dl>
+            </div>
             <p className="mt-4 text-[0.97rem] leading-[1.95] text-sumi-2">
               オープンまでのあいだも、施設へうかがう出張健康麻雀教室わんすぽと、
               まちの中での健康麻雀ボランティアは行っています。
@@ -127,11 +134,11 @@ export default function AccessPage() {
             },
             {
               t: '場所・住所・駐車場',
-              d: '店舗がまだ決まっていないため、お答えできません。決まり次第このページに載せます。',
+              d: `店舗がまだ決まっていないため、お答えできません。決まり次第このページに載せます。${school.venue.text}住所は${school.venue.addressLine}です。`,
             },
             {
               t: '営業時間・定休日',
-              d: 'オープンにあわせて決まります。施設利用のフリータイムは9:00〜17:00の時間帯を予定しています。',
+              d: 'オープンにあわせて決まります。決まりましたら、お電話・Instagram・このページでお知らせします。',
             },
             {
               t: '出張健康麻雀',

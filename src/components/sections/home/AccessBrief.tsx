@@ -40,6 +40,8 @@ export default function AccessBrief() {
                     <span className="mt-1 block text-[0.93rem] text-sumi-2">
                       {school.address.note}
                     </span>
+                    <span className="mt-2 block">{school.venue.text}</span>
+                    <span className="mt-1 block text-[0.95rem]">{school.venue.addressLine}</span>
                   </dd>
                 </div>
               </div>

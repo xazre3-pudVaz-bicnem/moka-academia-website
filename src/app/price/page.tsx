@@ -19,6 +19,7 @@ import {
   monthlyFees,
   onemoreBundles,
   onemoreCourses,
+  onemoreExamExtraPlans,
   onemoreNotes,
   onequestionCampaign,
   onequestionFees,
@@ -55,7 +56,7 @@ export default function PricePage() {
         crumbs={crumbs}
         eyebrow="PRICE"
         title="料金一覧"
-        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は入会金5,500円とオリジナルテキスト代2,000円、そのうえで月謝または1回ごとの施設利用料をお選びいただけます。出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制、哲学塾わんくえは1コース1,000円です。"
+        answer="ぽかぽかあかでみあの料金をまとめたページです。健康麻雀教室は入会金5,500円とオリジナルテキスト代2,000円、そのうえで月謝をお支払いいただきます。小学生から高校生までの方は、1回ごとの施設利用料（一律300円）でもご利用いただけます。出張健康麻雀わんすぽは60分5,000円、英語多読塾わんもあは月謝制、哲学塾わんくえは1コース1,000円です。"
       />
 
       {/* 健康麻雀 */}
@@ -63,7 +64,7 @@ export default function PricePage() {
         <SectionHeading
           en="ACADEMIA"
           title="健康麻雀教室 ぽかぽかあかでみあ"
-          lead="はじめに入会金5,500円とオリジナルテキスト代2,000円。そのうえで、毎週通う方は月謝、たまに来る方は施設利用料をお選びいただけます。"
+          lead="はじめに入会金5,500円とオリジナルテキスト代2,000円。そのうえで、毎週通う方は月謝をお支払いいただきます。小学生から高校生までの方は、1回ごとの施設利用料でもご利用いただけます。"
         />
         {/* オープンキャンペーン */}
         <Reveal delay={80}>
@@ -172,7 +173,7 @@ export default function PricePage() {
         <SectionHeading
           en="ONE MORE"
           title="英語多読塾 わんもあ"
-          lead="中学生・高校生対象。すべて毎週金曜日、90分授業、月謝制、各コース定員8名です。"
+          lead="中学生・高校生対象。毎週金曜日、90分授業、月謝制です。受験対策特化コースは、週3日まで通う日を追加できます。"
         />
         <div className="mt-11 overflow-x-auto">
           <table className="w-full min-w-[34rem] border-collapse text-left">
@@ -205,12 +206,27 @@ export default function PricePage() {
                   <td className="display py-4 text-right text-[1.3rem] text-daidai">{yen(c.yen)}</td>
                 </tr>
               ))}
+              {onemoreExamExtraPlans.map((p) => (
+                <tr key={p.label} className="border-b border-usu">
+                  <th scope="row" className="py-4 pr-4 text-left font-normal">
+                    <span className="display text-[1.02rem]">受験対策特化コース</span>
+                    <span className="mt-1 block text-[0.88rem] text-sumi-2">{p.label}</span>
+                  </th>
+                  <td className="py-4 pr-4 text-[0.95rem] text-sumi-2">
+                    各曜日に1教科が目安
+                    <span className="mt-0.5 block">曜日・時間はお問い合わせください</span>
+                  </td>
+                  <td className="display py-4 text-right text-[1.3rem] text-daidai">
+                    {p.yen !== undefined ? yen(p.yen) : 'お問い合わせください'}
+                  </td>
+                </tr>
+              ))}
               {onemoreBundles.map((b) => (
                 <tr key={b.label} className="border-b border-usu bg-kinari-2/60">
                   <th scope="row" className="py-4 pr-4 text-left font-normal">
                     <span className="display text-[1.02rem] text-momo">まとめ割・{b.label}</span>
                     <span className="mt-1 block text-[0.88rem] text-sumi-2">
-                      試験対策特化コース＋通常コース
+                      受験対策特化コース＋通常コース
                     </span>
                   </th>
                   <td className="py-4 pr-4 text-[0.95rem] text-sumi-2">
